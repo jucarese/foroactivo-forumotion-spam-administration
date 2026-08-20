@@ -25,10 +25,10 @@ Las extensiones funcionan localmente con los permisos de la sesión abierta en e
 
 ## Repository layout / Estructura
 
-- `es/source`: Spanish source code and bundled instructions.
+- `es/source`: Código fuente en español e instrucciones incluidas..
 - `en/source`: English source code and bundled instructions.
 - `releases`: ZIP files ready for submission to Mozilla Add-ons.
 - `CHECKSUMS.sha256`: SHA-256 hashes for package verification.
 
 No license has been granted for this repository. All rights are reserved by the repository owner unless a license is added later.
-
+No se ha otorgado ninguna licencia para este repositorio. Todos los derechos están reservados por el propietario del repositorio a menos que se agregue una licencia más adelante.
