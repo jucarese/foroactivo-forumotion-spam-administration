@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Forumotion Spam Administration",
+  "version": "1.1.5",
+  "description": "Administrative tool to log and bulk-delete a user's topics and posts.",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_title": "Remove a user's posts",
+    "default_popup": "popup.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "forumotion-bulk-delete-en@local",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
+    }
+  }
+}
