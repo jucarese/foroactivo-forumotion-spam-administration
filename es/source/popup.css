@@ -1,0 +1,38 @@
+:root {
+  color-scheme: light;
+  font: 14px/1.4 Arial, sans-serif;
+}
+body {
+  box-sizing: border-box;
+  width: 320px;
+  margin: 0;
+  padding: 18px;
+  color: #20242a;
+  background: #f6f8fb;
+}
+h1 {
+  margin: 0 0 10px;
+  font-size: 19px;
+}
+p {
+  margin: 0 0 14px;
+}
+button {
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 7px;
+  color: #fff;
+  background: #1769aa;
+  cursor: pointer;
+  font-weight: 700;
+}
+button:hover {
+  background: #105486;
+}
+#status {
+  min-height: 20px;
+  margin-top: 12px;
+  color: #a12222;
+  font-size: 12px;
+}
