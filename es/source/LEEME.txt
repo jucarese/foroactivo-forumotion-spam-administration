@@ -1,0 +1,101 @@
+EXTENSIÓN: LIMPIEZA DE SPAM PARA FOROACTIVO
+============================================
+
+VERSIÓN 1.1.5
+
+Finalidad
+---------
+La herramienta administrativa trabaja localmente con la sesión de Foroactivo
+que ya esté abierta.
+
+1. Localiza los temas y respuestas publicados por un usuario.
+2. Recopila antes del borrado el nombre, la ID, los datos visibles del perfil,
+   los enlaces a
+   sus publicaciones y todas las URL externas encontradas en sus mensajes.
+3. Obliga a descargar un informe previo antes de habilitar el borrado.
+4. Elimina completos los temas iniciados por el usuario, incluidas las
+   respuestas de otras personas que estén dentro.
+5. Elimina sus respuestas publicadas en temas ajenos.
+6. Comprueba después de cada operación que el contenido haya desaparecido.
+7. Descarga un registro final con cada eliminación confirmada o cada error.
+
+La extensión no bloquea ni elimina la cuenta del usuario.
+
+Uso con la herramienta antispam de Foroactivo
+----------------------------------------------
+El informe conserva las URL externas publicadas por el spammer y los enlaces a
+sus mensajes antes de que desaparezcan. Puedes copiar esos datos en la
+herramienta oficial de Foroactivo.
+
+La extensión no envía automáticamente una denuncia ni suplanta el formulario
+antispam de Foroactivo. La eliminación usa únicamente las acciones nativas que
+la sesión de moderación tenga autorizadas.
+
+Seguridad
+---------
+- No guarda nombres de acceso, contraseñas, cookies ni claves de sesión.
+- No envía información a servidores externos.
+- Los informes se generan y descargan localmente en el navegador.
+- Solo funciona mientras la sesión administrativa abierta conserve permisos.
+- Al cerrar la sesión de Foroactivo pierde la capacidad de eliminar.
+- El borrado requiere descargar el informe previo y escribir la confirmación
+  exacta solicitada.
+- La cancelación detiene el proceso después de la operación en curso.
+
+IMPORTANTE
+----------
+El borrado es irreversible. Prueba primero con un usuario ficticio y mensajes
+creados expresamente en un foro de pruebas. No utilices la extensión sobre un
+usuario real hasta confirmar que el informe y el borrado funcionan correctamente.
+
+Instalación en Chrome
+---------------------
+1. Descomprime el ZIP.
+2. Abre chrome://extensions
+3. Activa "Modo de desarrollador".
+4. Pulsa "Cargar descomprimida".
+5. Selecciona la carpeta foroactivo-limpieza-usuario.
+
+Instalación en Edge
+-------------------
+1. Descomprime el ZIP.
+2. Abre edge://extensions
+3. Activa "Modo de desarrollador".
+4. Pulsa "Cargar desempaquetada".
+5. Selecciona la carpeta foroactivo-limpieza-usuario.
+
+Instalación temporal en Firefox
+-------------------------------
+1. Descomprime el ZIP.
+2. Abre about:debugging#/runtime/this-firefox
+3. Pulsa "Cargar complemento temporal".
+4. Selecciona manifest.json.
+
+Firefox elimina los complementos temporales al cerrar el navegador. Para una
+instalación permanente es necesaria la firma de Mozilla.
+
+Uso
+---
+1. Inicia sesión en Foroactivo como administrador o moderador.
+2. Abre una página del propio foro.
+3. Pulsa el icono de la extensión y después "Abrir herramienta".
+4. Escribe el nombre exacto del usuario y pulsa "Analizar mensajes".
+5. Revisa las cantidades encontradas.
+6. Descarga obligatoriamente el informe previo y guárdalo.
+7. Escribe la confirmación solicitada y comienza el borrado.
+8. Guarda el registro final.
+9. Cierra completamente la sesión de Foroactivo.
+
+Compatibilidad
+--------------
+Diseñada para phpBB2, phpBB3, PunBB, Invision, ModernBB y AwesomeBB. Las
+plantillas muy modificadas pueden ocultar acciones nativas; en ese caso la
+extensión registra el error y no intenta eludir los permisos del servidor.
+
+La detección de identidad ignora los iconos insertados dentro del nombre de
+usuario. Por ejemplo, un enlace /u2 con el texto visual "pruebaskin" se registra
+como nombre "pruebaskin" e ID de usuario 2 aunque incluya un icono de grupo.
+
+El identificador principal del informe es siempre que sea posible la dirección
+completa del perfil, por ejemplo https://pruebaskinfdf.foroactivo.com/u2. De
+este modo quedan registrados conjuntamente el foro y la ID del usuario.
