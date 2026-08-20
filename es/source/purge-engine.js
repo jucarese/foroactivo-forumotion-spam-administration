@@ -315,6 +315,33 @@
     } catch (_) { return 0; }
   }
 
+  function pageKey(url) {
+    try {
+      const parsed = new URL(url, location.origin);
+      parsed.hash = "";
+      return parsed.href;
+    } catch (_) { return url; }
+  }
+
+  function sameSearchSeries(currentUrl, candidateUrl) {
+    try {
+      const current = new URL(currentUrl, location.origin);
+      const candidate = new URL(candidateUrl, location.origin);
+      if (candidate.origin !== current.origin) return false;
+
+      const friendly = path => path.replace(/\/(\d+)\/?$/, "").replace(/\/$/, "");
+      if (/^\/(?:spa|sta)\//i.test(current.pathname)) {
+        return friendly(candidate.pathname) === friendly(current.pathname);
+      }
+      if (current.pathname === "/search") {
+        return candidate.pathname === "/search" &&
+          candidate.searchParams.get("search_author") === current.searchParams.get("search_author") &&
+          candidate.searchParams.get("show_results") === current.searchParams.get("show_results");
+      }
+      return candidate.pathname === current.pathname;
+    } catch (_) { return false; }
+  }
+
   function collectPostLinks(doc) {
     const found = [];
     const known = new Set();
@@ -345,6 +372,27 @@
       found.push({ postId, topicId, url: `${href.split("#")[0]}#${postId}` });
     }
     return found;
+  }
+
+  function collectStartedTopicLinks(doc) {
+    const found = new Map();
+    const selectors = [
+      "a.topictitle[href]",
+      "a.topic-title[href]",
+      ".search a[href]",
+      ".search-results a[href]",
+      ".topiclist a[href]",
+      "h2 a[href]",
+      "h3 a[href]"
+    ];
+    let links = doc.querySelectorAll(selectors.join(","));
+    if (!links.length) links = doc.querySelectorAll("a[href]");
+    for (const link of links) {
+      const href = absolute(link.getAttribute("href"));
+      const topicId = topicIdFromUrl(href);
+      if (topicId && !found.has(topicId)) found.set(topicId, { topicId, url: href });
+    }
+    return [...found.values()];
   }
 
   function collectExternalUrls(container) {
@@ -462,8 +510,18 @@
     const currentOffset = pageOffset(currentUrl);
     let candidate = null;
     let candidateOffset = Infinity;
-    for (const link of doc.querySelectorAll('a[href*="start="], .pagination a[href], .pag-img a[href]')) {
+    const selectors = [
+      'a[rel="next"][href]',
+      'a[href*="start="]',
+      '.pagination a[href]',
+      '.pag-img a[href]',
+      '.pagination span a[href]',
+      'a[href^="/spa/"]',
+      'a[href^="/sta/"]'
+    ];
+    for (const link of doc.querySelectorAll(selectors.join(","))) {
       const href = absolute(link.getAttribute("href"));
+      if (!sameSearchSeries(currentUrl, href)) continue;
       const offset = pageOffset(href);
       if (offset > currentOffset && offset < candidateOffset) {
         candidate = href;
@@ -471,6 +529,20 @@
       }
     }
     return candidate;
+  }
+
+  async function walkSearchPages(firstPage, label, collector) {
+    const visited = new Set();
+    let page = firstPage;
+    for (let count = 0; count < 1000 && page; count++) {
+      const key = pageKey(page.url);
+      if (visited.has(key)) break;
+      visited.add(key);
+      collector(page.doc);
+      log(`${label} ${count + 1}: ${state.posts.size} mensajes únicos localizados.`);
+      const next = findNextSearchPage(page.doc, page.url);
+      page = next && !visited.has(pageKey(next)) ? await getDocument(next) : null;
+    }
   }
 
   async function resolveSearchUrl(username) {
@@ -493,6 +565,20 @@
       "Foroactivo no devolvió mensajes reconocibles. Diagnóstico: " +
       diagnostics.join(" | ")
     );
+  }
+
+  async function resolveStartedTopicsUrl(username) {
+    const candidates = [
+      `/sta/${encodeURIComponent(username)}`,
+      `/search?search_author=${encodeURIComponent(username)}&show_results=topics`,
+      `/search?mode=searchuser&search_author=${encodeURIComponent(username)}&show_results=topics`
+    ];
+    for (const candidate of candidates) {
+      const result = await getDocument(candidate);
+      if (detectLogin(result.doc)) throw new Error("La sesión del foro no está iniciada.");
+      if (collectStartedTopicLinks(result.doc).length) return result;
+    }
+    return null;
   }
 
   async function scan() {
@@ -530,15 +616,42 @@
         state.failures.push(`Perfil: ${error.message}`);
       }
     }
-    const visited = new Set();
+    await walkSearchPages(page, "Página de mensajes", doc => {
+      for (const post of collectPostLinks(doc)) state.posts.set(post.postId, post);
+    });
 
-    for (let count = 0; count < 500 && page; count++) {
-      if (visited.has(page.url)) break;
-      visited.add(page.url);
-      for (const post of collectPostLinks(page.doc)) state.posts.set(post.postId, post);
-      log(`Página ${count + 1}: ${state.posts.size} mensajes únicos localizados.`);
-      const next = findNextSearchPage(page.doc, page.url);
-      page = next && !visited.has(next) ? await getDocument(next) : null;
+    log("Buscando también todos los temas iniciados por el usuario…");
+    const startedTopics = new Map();
+    const topicSearch = await resolveStartedTopicsUrl(state.username);
+    if (topicSearch) {
+      await walkSearchPages(topicSearch, "Página de temas", doc => {
+        for (const topic of collectStartedTopicLinks(doc)) startedTopics.set(topic.topicId, topic);
+      });
+    }
+
+    for (const topic of startedTopics.values()) {
+      try {
+        const topicPage = await getDocument(`/t${topic.topicId}-`);
+        const ids = [...topicPage.doc.querySelectorAll('[id^="p"]')]
+          .map(node => Number((node.id.match(/^p(\d+)$/) || [])[1]))
+          .filter(Boolean);
+        const firstPostId = ids[0] || collectPostLinks(topicPage.doc)[0]?.postId || null;
+        if (!firstPostId) continue;
+        const identity = extractIdentityFromPost(topicPage.doc, firstPostId, state.username);
+        if (!identity) continue;
+        if (state.userId && identity.userId !== state.userId) continue;
+        if (!state.userId) state.userId = identity.userId;
+        state.profileUrl = canonicalProfileUrl(state.userId) || identity.profileUrl;
+        if (!state.posts.has(firstPostId)) {
+          state.posts.set(firstPostId, {
+            postId: firstPostId,
+            topicId: topic.topicId,
+            url: `${absolute(`/t${topic.topicId}-`).split("#")[0]}#p${firstPostId}`
+          });
+        }
+      } catch (error) {
+        state.failures.push(`Tema iniciado ${topic.topicId}: ${error.message}`);
+      }
     }
 
     if (!state.posts.size) throw new Error("No se encontraron mensajes para ese usuario.");

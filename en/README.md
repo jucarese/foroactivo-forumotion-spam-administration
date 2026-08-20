@@ -1,6 +1,13 @@
 # Forumotion Spam Administration
 
-Version 1.1.5 of the English administrative extension.
+Version 1.1.6 of the English administrative extension.
+
+## New in version 1.1.6
+
+- Walks every page of the post search.
+- Separately finds every topic started by the user.
+- Checks that each topic's first post really belongs to the user before including it.
+- Prevents partial Forumotion pagination from limiting the scan to the first results.
 
 ## Features
 
@@ -17,13 +24,12 @@ It does not ban or delete the account and does not automatically submit spam rep
 
 ### Temporary Firefox installation
 
-1. Extract the ZIP from `releases`.
+1. Download and extract the English ZIP from `releases`.
 2. Open `about:debugging#/runtime/this-firefox`.
 3. Select **Load Temporary Add-on**.
 4. Select `manifest.json`.
-Signed extension
-https://addons.mozilla.org/firefox/downloads/file/4964421/6f23128540034fd69a99-1.1.5.xpi
-copy and paste in browser and install extension
+
+Version 1.1.6 must be signed by Mozilla for permanent installation. Until that update is published, the signed listing may continue to offer an earlier version.
 
 ### Chrome or Edge
 
@@ -44,4 +50,3 @@ copy and paste in browser and install extension
 Deletion is irreversible. Perform a controlled test on a test forum first.
 
 Designed for phpBB2, phpBB3, PunBB, Invision, ModernBB, and AwesomeBB. Heavily customized templates may hide native actions; in that case the extension records the error.
-

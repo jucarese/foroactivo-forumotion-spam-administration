@@ -8,10 +8,16 @@ Extensiones de navegador para administradores que necesitan documentar y elimina
 
 | Edition | Source | Mozilla package | Documentation |
 |---|---|---|---|
-| Español | [`es/source`](es/source) | [`foroactivo-administracion-spam-AMO-1.1.5.zip`](releases/foroactivo-administracion-spam-AMO-1.1.5.zip) | [`es/README.md`](es/README.md) |
-| English | [`en/source`](en/source) | [`forumotion-spam-administration-AMO-1.1.5.zip`](releases/forumotion-spam-administration-AMO-1.1.5.zip) | [`en/README.md`](en/README.md) |
+| Español | [`es/source`](es/source) | [`foroactivo-administracion-spam-AMO-1.1.6.zip`](releases/foroactivo-administracion-spam-AMO-1.1.6.zip) | [`es/README.md`](es/README.md) |
+| English | [`en/source`](en/source) | [`forumotion-spam-administration-AMO-1.1.6.zip`](releases/forumotion-spam-administration-AMO-1.1.6.zip) | [`en/README.md`](en/README.md) |
 
-Current version / Versión actual: **1.1.5**
+Current version / Versión actual: **1.1.6**
+
+## Version 1.1.6
+
+The extension now walks the complete paginated post search and separately scans the complete list of topics started by the user. Each additional topic is checked against the first post's author before being included.
+
+La extensión recorre ahora toda la búsqueda paginada de mensajes y examina por separado la lista completa de temas iniciados por el usuario. Antes de incluir cada tema adicional comprueba quién publicó su primer mensaje.
 
 ## Important / Importante
 
@@ -25,10 +31,11 @@ Las extensiones funcionan localmente con los permisos de la sesión abierta en e
 
 ## Repository layout / Estructura
 
-- `es/source`: Código fuente en español e instrucciones incluidas..
+- `es/source`: Código fuente en español e instrucciones incluidas.
 - `en/source`: English source code and bundled instructions.
 - `releases`: ZIP files ready for submission to Mozilla Add-ons.
 - `CHECKSUMS.sha256`: SHA-256 hashes for package verification.
 
 No license has been granted for this repository. All rights are reserved by the repository owner unless a license is added later.
+
 No se ha otorgado ninguna licencia para este repositorio. Todos los derechos están reservados por el propietario del repositorio a menos que se agregue una licencia más adelante.

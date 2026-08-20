@@ -1,6 +1,13 @@
 # Administración de spam para Foroactivo
 
-Versión 1.1.5 de la extensión administrativa en español.
+Versión 1.1.6 de la extensión administrativa en español.
+
+## Novedad de la versión 1.1.6
+
+- Recorre todas las páginas de la búsqueda de mensajes.
+- Busca por separado todos los temas iniciados por el usuario.
+- Comprueba que el primer mensaje de cada tema pertenece realmente al usuario antes de incluirlo.
+- Evita que una paginación parcial de Foroactivo limite el análisis a los primeros resultados.
 
 ## Funciones
 
@@ -17,13 +24,12 @@ No bloquea ni elimina la cuenta y no envía automáticamente denuncias a Foroact
 
 ### Firefox temporal
 
-1. Descomprime el ZIP de `releases`.
+1. Descarga y descomprime el ZIP español de `releases`.
 2. Abre `about:debugging#/runtime/this-firefox`.
 3. Pulsa **Cargar complemento temporal**.
 4. Selecciona `manifest.json`.
 
-Para una instalación permanente abre este enlace a la extensión en tu navegador
-https://addons.mozilla.org/firefox/downloads/file/4970860/e641addaa849440aae36-1.1.5.xpi
+La versión 1.1.6 necesitará la firma de Mozilla para una instalación permanente. Mientras no se publique esa actualización, la ficha firmada puede seguir ofreciendo una versión anterior.
 
 ### Chrome o Edge
 
@@ -44,4 +50,3 @@ https://addons.mozilla.org/firefox/downloads/file/4970860/e641addaa849440aae36-1
 El borrado es irreversible. Realiza primero una prueba controlada en un foro de pruebas.
 
 Compatibilidad prevista: phpBB2, phpBB3, PunBB, Invision, ModernBB y AwesomeBB. Las plantillas muy modificadas pueden ocultar acciones nativas; en ese caso la extensión registra el error.
-
