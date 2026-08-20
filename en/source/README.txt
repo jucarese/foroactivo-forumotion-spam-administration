@@ -1,7 +1,7 @@
 FORUMOTION SPAM ADMINISTRATION
 ==============================
 
-VERSION 1.1.5 · ENGLISH EDITION
+VERSION 1.1.6 · ENGLISH EDITION
 
 Purpose
 -------
@@ -9,6 +9,8 @@ This administrative browser extension works locally with an already-open
 Forumotion administrator session.
 
 1. Finds topics and replies posted by a specified user.
+   To avoid partial results, it separately walks every page of the post search
+   and every page of the started-topic search.
 2. Collects the username, numeric user ID, canonical profile address, visible
    profile data, links to the user's posts, and external URLs found in them.
 3. Requires a pre-deletion report to be downloaded before deletion is enabled.

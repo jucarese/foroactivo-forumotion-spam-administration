@@ -1,7 +1,7 @@
 EXTENSIÓN: LIMPIEZA DE SPAM PARA FOROACTIVO
 ============================================
 
-VERSIÓN 1.1.5
+VERSIÓN 1.1.6
 
 Finalidad
 ---------
@@ -9,6 +9,8 @@ La herramienta administrativa trabaja localmente con la sesión de Foroactivo
 que ya esté abierta.
 
 1. Localiza los temas y respuestas publicados por un usuario.
+   Para evitar resultados parciales, recorre por separado la búsqueda de
+   mensajes y la búsqueda de temas iniciados, incluidas todas sus páginas.
 2. Recopila antes del borrado el nombre, la ID, los datos visibles del perfil,
    los enlaces a
    sus publicaciones y todas las URL externas encontradas en sus mensajes.
