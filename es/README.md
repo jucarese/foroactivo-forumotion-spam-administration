@@ -22,7 +22,8 @@ No bloquea ni elimina la cuenta y no envía automáticamente denuncias a Foroact
 3. Pulsa **Cargar complemento temporal**.
 4. Selecciona `manifest.json`.
 
-Para una instalación permanente se necesita una versión firmada por Mozilla.
+Para una instalación permanente abre este enlace a la extensión en tu navegador
+https://addons.mozilla.org/firefox/downloads/file/4970860/e641addaa849440aae36-1.1.5.xpi
 
 ### Chrome o Edge
 
