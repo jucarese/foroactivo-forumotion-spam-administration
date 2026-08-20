@@ -21,8 +21,9 @@ It does not ban or delete the account and does not automatically submit spam rep
 2. Open `about:debugging#/runtime/this-firefox`.
 3. Select **Load Temporary Add-on**.
 4. Select `manifest.json`.
-
-A Mozilla-signed build is required for permanent installation.
+Signed extension
+https://addons.mozilla.org/firefox/downloads/file/4964421/6f23128540034fd69a99-1.1.5.xpi
+copy and paste in browser and install extension
 
 ### Chrome or Edge
 
